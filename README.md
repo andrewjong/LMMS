@@ -18,10 +18,12 @@ On first run, constructing the Disambiguator object will download the sense vect
 and BERT checkpoint.
 
 ## Install
-Run `pip install -r requirements.txt`.
+Run `pip install -r requirements.txt` (technically optional, but this makes sure all dependencies install correctly first).
 
 Then run `pip install git+ssh://git@github.com/andrewjong/LMMS-API#egg=lmms_api` to allow importing 
 `lmms_api`.
+
+Note: the fastText dependency can get a little finicky. If installing through `requirements.txt` doesn't work for you, try [installing it separately yourself](https://github.com/facebookresearch/fastText#requirements).
 
 ## Further Options
 The Disambiguator() constructor can take many arguments.
