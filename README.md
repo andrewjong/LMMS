@@ -12,7 +12,8 @@ from lmms_api import Disambiguator
 dis = Disambiguator()
 
 my_sentence = "My dog Spot looks pretty cool jumping over the bank."
-dis.sentence_to_synsets(my_sentence)  # returns a list of top WordNet synsets
+# returns a list of top WordNet synsets and their probabilities
+dis.sentence_to_synsets(my_sentence)
 ```
 On first run, constructing the Disambiguator object will download the sense vectors 
 and BERT checkpoint.
