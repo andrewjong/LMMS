@@ -1,15 +1,20 @@
+import atexit
 from setuptools import setup
 from setuptools.command.install import install
 
 
-class PostInstallCommand(install):
+def _post_install():
+    import nltk
+
+    nltk.download("wordnet")
+
+
+class InstallNLTK(install):
     """Post-installation for installation mode."""
 
-    def run(self):
-        import nltk
-
-        nltk.download("wordnet")
-        install.run(self)
+    def __init(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        atexit.register(_post_install)
 
 
 setup(
@@ -37,5 +42,5 @@ setup(
     ],
     zip_safe=False,
     python_requires=">=3.6",
-    cmdclass={"install": PostInstallCommand},
+    cmdclass={"install": InstallNLTK},
 )
