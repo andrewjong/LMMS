@@ -1,17 +1,19 @@
 import numpy as np
+from os import path
 
 from lmms_api import bert_tokenization
 from bert_serving.client import BertClient
 
 from lmms_api import BERT_CHECKPOINT
 
-tokenizer = bert_tokenization.FullTokenizer(vocab_file=BERT_CHECKPOINT + 'vocab.txt',
-                                            do_lower_case=False)
+tokenizer = bert_tokenization.FullTokenizer(
+    vocab_file=path.join(BERT_CHECKPOINT, "vocab.txt"), do_lower_case=False
+)
 
 bc = BertClient()
 
 
-def bert_embed(sents, merge_subtokens=True, merge_strategy='first'):
+def bert_embed(sents, merge_subtokens=True, merge_strategy="first"):
     sents_encodings_full = bc.encode(sents)
     sents_tokenized = [tokenizer.tokenize(s) for s in sents]
 
@@ -45,11 +47,11 @@ def bert_embed(sents, merge_subtokens=True, merge_strategy='first'):
                 token_vec = np.zeros(1024)
                 if len(token_vecs) == 0:
                     pass
-                elif merge_strategy == 'first':
+                elif merge_strategy == "first":
                     token_vec = np.array(token_vecs[0])
-                elif merge_strategy == 'sum':
+                elif merge_strategy == "sum":
                     token_vec = np.array(token_vecs).sum(axis=0)
-                elif merge_strategy == 'mean':
+                elif merge_strategy == "mean":
                     token_vec = np.array(token_vecs).mean(axis=0)
 
                 sent_tokens_vecs.append((token, token_vec))
@@ -61,7 +63,7 @@ def bert_embed(sents, merge_subtokens=True, merge_strategy='first'):
     return sent_encodings
 
 
-def bert_embed_sents(sents, strategy='CLS_TOKEN'):
+def bert_embed_sents(sents, strategy="CLS_TOKEN"):
     sents_encodings_full = bc.encode(sents)
     sents_encodings = []
     for sent, sent_vec in zip(sents, sents_encodings_full):

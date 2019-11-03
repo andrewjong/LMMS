@@ -38,7 +38,7 @@ Available options are "1024", "2048", and "2348" (strings). Default is "1024".
 By default, constructing a Disambiguator object starts a new bert-as-service process in
  the background (`bert-serving-start`). Any existing `bert-serving-start` processes are 
  killed to prevent conflict. When the program ends, the created process is killed.
- However, this makes start-up pretty slow.
+ However, this adds some overhead.
  
 If you'd like to manage your own `bert-serving-start` process and not start one through this
 API, pass `start_bert_server=False` to `Disambiguator()`.
