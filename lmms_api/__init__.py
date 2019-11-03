@@ -107,9 +107,7 @@ class Disambiguator:
         if self._bert_process.poll() is not None:
             raise ValueError("BERT serving failed, cannot get disambiguation.")
         # get matches
-        from exp_mapping import map_senses
-
-        matches = map_senses(
+        matches = _map_senses(
             self._senses_vsm,
             sent_info["tokens"],
             sent_info["pos"],
@@ -123,9 +121,7 @@ class Disambiguator:
             a wordnet synset object. """
             first_match = match[0]
             sensekey, score = first_match
-            from exp_mapping import wn_sensekey2synset
-
-            synset = wn_sensekey2synset(sensekey)
+            synset = _wn_sensekey2synset(sensekey)
             return synset, score
 
         synsets = list(map(map_matches_to_synsets, matches))
