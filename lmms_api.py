@@ -44,11 +44,12 @@ class Disambiguator:
     def __init__(
         self,
         tokenizer=spacy.load("en_core_web_sm"),
-        sense_type="1024",
+        sv_size="1024",
         start_bert_server=True,
         bert_serving_start_path="bert-serving-start",
         bert_batch_size=32,
         keep_existing_server=False,
+        kill_server_at_end=True
     ):
         """
         Creates the main interface to access LMMS word sense disambiguation.
@@ -57,16 +58,17 @@ class Disambiguator:
 
         Args:
             tokenizer: the tokenizer to use (default: spacy's tokenizer from "en_core_web_sm")
-            sense_type (str): what size LMMS sense embedding vectors to use ("1024", "2048", or "2348") (default: "1024").
+            sv_size (str): what size LMMS sense embedding vectors to use ("1024", "2048", or "2348") (default: "1024").
             start_bert_server (bool): whether to start bert_serving on init (default: True).
             bert_serving_start_path: the path to the `bert-serving-start` command. If using conda, it's probably in that envs' bin folder.
             bert_batch_size (int): batch size to start bert server with (default: 32)
             keep_existing_server (bool): whether to keep other BERT serving processes. Set to True if you prefer to manage your own external BERT serving (default: False).
+            kill_server_at_end (bool): whether to auto kill the BERT serving process when Python exits. Can set to False if you'd like to keep the server alive between runs (default: True).
         """
         print("======== Setting Up LMMS =========")
         self.tokenizer = tokenizer
 
-        sv_path = maybe_download_sense_vectors(sense_type)
+        sv_path = maybe_download_sense_vectors(sv_size)
         # the object that gets the senses
         self._senses_vsm = SensesVSM(sv_path, normalize=True)
 
@@ -79,7 +81,8 @@ class Disambiguator:
             self._bert_serving_start_path = bert_serving_start_path
             self._set_bert_serving_start_command(bert_batch_size)
             self.maybe_start_bert_serving()
-            atexit.register(self.kill_my_bert_serving)  # ensure cleanup
+            if kill_server_at_end:
+                atexit.register(self.kill_my_bert_serving)  # ensure cleanup
         print("======= Finished LMMS Setup =======")
 
     def sentence_to_synsets(self, sentence):
