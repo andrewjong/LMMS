@@ -1,9 +1,6 @@
-import os
 import argparse
 import logging
-from time import time
 from functools import lru_cache
-from datetime import datetime
 
 import numpy as np
 from nltk.corpus import wordnet as wn
@@ -12,7 +9,7 @@ import spacy
 nlp = spacy.load('en_core_web_sm')
 
 from bert_as_service import bert_embed
-from vectorspace import SensesVSM
+from lmms_api.vectorspace import SensesVSM
 
 
 logging.basicConfig(level=logging.DEBUG,
@@ -31,6 +28,14 @@ def wn_sensekey2synset(sensekey):
 
 
 def get_sent_info(merge_ents=False):
+    """
+    Reads from stdin and tokenizes using spacy.
+    Args:
+        merge_ents:
+
+    Returns:
+
+    """
     sent_info = {'tokens': [], 'lemmas': [], 'pos': [], 'sentence': ''}
 
     sent_info['sentence'] = input('Input Sentence (\'q\' to exit):\n')

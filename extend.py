@@ -6,7 +6,7 @@ from collections import defaultdict
 import numpy as np
 from nltk.corpus import wordnet as wn
 
-from vectorspace import SensesVSM
+from lmms_api.vectorspace import SensesVSM
 
 
 logging.basicConfig(level=logging.DEBUG,

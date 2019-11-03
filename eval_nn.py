@@ -2,18 +2,16 @@ import os
 import logging
 import argparse
 from time import time
-from datetime import datetime
 from functools import lru_cache
 from collections import defaultdict
-from collections import Counter
 import xml.etree.ElementTree as ET
 
 import numpy as np
 from nltk.corpus import wordnet as wn
 
 from bert_as_service import bert_embed
-from vectorspace import SensesVSM
-from vectorspace import get_sk_pos
+from lmms_api.vectorspace import SensesVSM
+from lmms_api.vectorspace import get_sk_pos
 
 
 logging.basicConfig(level=logging.DEBUG,

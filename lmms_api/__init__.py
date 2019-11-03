@@ -4,15 +4,20 @@ This file is meant to be a Python API for accessing WSD
 import atexit
 import os
 import subprocess
+from functools import lru_cache
 from types import SimpleNamespace
 from zipfile import ZipFile
 
 import gdown
+import numpy as np
 import psutil
 import spacy
 import wget
+from nltk.corpus import wordnet as wn
+from spacy.cli.download import download as spacy_download
 
-from vectorspace import SensesVSM
+from bert_as_service import bert_embed
+from lmms_api.vectorspace import SensesVSM
 
 ROOT = ".lmms"
 # download source of bert checkpoint
@@ -39,6 +44,11 @@ SV_DOWNLOAD_INFO = {
     ),
 }
 
+try:
+    spacy.load("en_core_web_sm")
+except OSError:
+    spacy_download("en_core_web_sm")
+
 
 class Disambiguator:
     def __init__(
@@ -49,7 +59,7 @@ class Disambiguator:
         bert_serving_start_path="bert-serving-start",
         bert_batch_size=32,
         keep_existing_server=False,
-        kill_server_at_end=True
+        kill_server_at_end=True,
     ):
         """
         Creates the main interface to access LMMS word sense disambiguation.
@@ -307,3 +317,58 @@ def maybe_download_pretrained_bert():
         print("BERT checkpoint found.")
     else:
         raise ValueError("Failed to download BERT")
+
+
+def _map_senses(svsm, tokens, postags=[], lemmas=[], use_postag=False, use_lemma=False):
+    """Given loaded LMMS and a list of tokens, returns a list of scored sensekeys."""
+
+    matches = []
+
+    if len(tokens) != len(postags):  # mismatched
+        use_postag = False
+
+    if len(tokens) != len(lemmas):  # mismatched
+        use_lemma = False
+
+    sent_bert = bert_embed([" ".join(tokens)], merge_strategy="mean")[0]
+
+    for idx in range(len(tokens)):
+        idx_vec = sent_bert[idx][1]
+        idx_vec = idx_vec / np.linalg.norm(idx_vec)
+
+        if svsm.ndims == 1024:
+            # idx_vec = idx_vec
+            pass
+
+        elif svsm.ndims == 1024 + 1024:
+            idx_vec = np.hstack((idx_vec, idx_vec))
+            idx_vec = idx_vec / np.linalg.norm(idx_vec)
+
+        idx_matches = []
+        if use_lemma and use_postag:
+            idx_matches = svsm.match_senses(
+                idx_vec, lemmas[idx], postags[idx], topn=None
+            )
+
+        elif use_lemma:
+            idx_matches = svsm.match_senses(idx_vec, lemmas[idx], None, topn=None)
+
+        elif use_postag:
+            idx_matches = svsm.match_senses(idx_vec, None, postags[idx], topn=None)
+
+        else:
+            idx_matches = svsm.match_senses(idx_vec, None, None, topn=None)
+
+        matches.append(idx_matches)
+
+    return matches
+
+
+@lru_cache()
+def _wn_sensekey2synset(sensekey):
+    lemma = sensekey.split("%")[0]
+    for synset in wn.synsets(lemma):
+        for lemma in synset.lemmas():
+            if lemma.key() == sensekey:
+                return synset
+    return None

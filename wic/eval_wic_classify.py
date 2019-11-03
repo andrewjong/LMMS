@@ -2,7 +2,6 @@ import os
 import argparse
 import logging
 from functools import lru_cache
-from collections import defaultdict
 
 import numpy as np
 from nltk.corpus import wordnet as wn
@@ -15,7 +14,7 @@ import sys  # for parent directory imports
 sys.path.insert(1, os.path.join(sys.path[0], '..'))
 
 from bert_as_service import bert_embed
-from vectorspace import SensesVSM
+from lmms_api.vectorspace import SensesVSM
 
 
 logging.basicConfig(level=logging.DEBUG,

@@ -17,6 +17,12 @@ dis.sentence_to_synsets(my_sentence)  # returns a list of top WordNet synsets
 On first run, constructing the Disambiguator object will download the sense vectors 
 and BERT checkpoint.
 
+## Install
+Run `pip install -r requirements.txt`.
+
+Then run `pip install git+ssh://git@github.com/andrewjong/LMMS.git` to allow importing 
+`lmms_api`.
+
 ## Further Options
 The Disambiguator() constructor can take many arguments.
 

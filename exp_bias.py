@@ -1,6 +1,5 @@
 import argparse
 import logging
-from collections import defaultdict
 
 import numpy as np
 from nltk.corpus import wordnet as wn
@@ -11,7 +10,7 @@ rc('text', usetex=True)
 plt.switch_backend('agg')
 plt.rcParams.update({'font.size': 18})
 
-from vectorspace import SensesVSM
+from lmms_api.vectorspace import SensesVSM
 
 
 logging.basicConfig(level=logging.DEBUG,
