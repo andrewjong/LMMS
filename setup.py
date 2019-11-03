@@ -35,10 +35,8 @@ setup(
         "gdown==3.8.3",
         "psutil",
         "wget",
-        "fastText @ git+https://github.com/facebookresearch/fastText.git@v0.2.0#egg=fastText-0.2.0"
-    ],
-    dependency_links=[
-        "https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-2.1.0/en_core_web_sm-2.1.0.tar.gz#egg=en_core_web_sm"
+        "fastText @ git+https://github.com/facebookresearch/fastText.git@v0.2.0#egg=fastText-0.2.0",
+        "en_core_web_sm @ git+https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-2.1.0/en_core_web_sm-2.1.0.tar.gz#egg=en_core_web_sm"
     ],
     zip_safe=False,
     python_requires=">=3.6",
