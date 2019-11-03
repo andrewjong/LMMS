@@ -20,7 +20,7 @@ and BERT checkpoint.
 ## Install
 Run `pip install -r requirements.txt`.
 
-Then run `pip install git+ssh://git@github.com/andrewjong/LMMS.git` to allow importing 
+Then run `pip install git+ssh://git@github.com/andrewjong/LMMS-API.git` to allow importing 
 `lmms_api`.
 
 ## Further Options
