@@ -27,7 +27,7 @@ setup(
     license="unlicensed",
     packages=["lmms_api"],
     install_requires=[
-        "tensorflow-gpu>=1.10.0,<2.0.0",
+        "tensorflow>=1.10.0,<2.0.0",
         "bert-serving-server==1.9.1",
         "bert-serving-client==1.9.1",
         "nltk==3.4.5",
