@@ -8,7 +8,7 @@ from nltk.corpus import wordnet as wn
 import spacy
 nlp = spacy.load('en_core_web_sm')
 
-from bert_as_service import bert_embed
+from lmms_api.bert_as_service import bert_embed
 from lmms_api.vectorspace import SensesVSM
 
 

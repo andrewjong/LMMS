@@ -5,8 +5,8 @@ from time import time
 import lxml.etree
 import numpy as np
 
-from bert_as_service import bert_embed
-from bert_as_service import tokenizer as bert_tokenizer
+from lmms_api.bert_as_service import bert_embed
+from lmms_api.bert_as_service import tokenizer as bert_tokenizer
 
 
 logging.basicConfig(level=logging.DEBUG,

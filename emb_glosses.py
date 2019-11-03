@@ -7,9 +7,7 @@ import numpy as np
 from nltk.corpus import wordnet as wn
 from nltk import word_tokenize
 
-from bert_as_service import bert_embed_sents
-from bert_as_service import bert_embed
-
+from lmms_api.bert_as_service import bert_embed_sents
 
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s - %(levelname)s - %(message)s',

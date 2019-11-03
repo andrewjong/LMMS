@@ -14,7 +14,7 @@ from sklearn.externals import joblib
 import sys  # for parent directory imports
 sys.path.insert(1, os.path.join(sys.path[0], '..'))
 
-from bert_as_service import bert_embed
+from lmms_api.bert_as_service import bert_embed
 from lmms_api.vectorspace import SensesVSM
 
 

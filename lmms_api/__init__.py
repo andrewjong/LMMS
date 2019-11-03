@@ -325,7 +325,7 @@ def _map_senses(svsm, tokens, postags=[], lemmas=[], use_postag=False, use_lemma
     if len(tokens) != len(lemmas):  # mismatched
         use_lemma = False
 
-    from bert_as_service import bert_embed
+    from lmms_api.bert_as_service import bert_embed
     sent_bert = bert_embed([" ".join(tokens)], merge_strategy="mean")[0]
 
     for idx in range(len(tokens)):

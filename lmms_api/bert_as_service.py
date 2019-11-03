@@ -1,11 +1,11 @@
 import numpy as np
 
-import bert_tokenization
+from lmms_api import bert_tokenization
 from bert_serving.client import BertClient
 
 
 BERT_BASE_DIR = 'external/bert/cased_L-24_H-1024_A-16/'
-tokenizer = bert_tokenization.FullTokenizer(vocab_file=BERT_BASE_DIR+'vocab.txt',
+tokenizer = bert_tokenization.FullTokenizer(vocab_file=BERT_BASE_DIR + 'vocab.txt',
                                             do_lower_case=False)
 
 bc = BertClient()
