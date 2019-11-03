@@ -11,7 +11,7 @@ from lmms_api import Disambiguator
 
 dis = Disambiguator()
 
-my_sentence = "My dog Spot looked pretty cool jumping over the bank."
+my_sentence = "My dog Spot looks pretty cool jumping over the bank."
 dis.sentence_to_synsets(my_sentence)  # returns a list of top WordNet synsets
 ```
 On first run, constructing the Disambiguator object will download the sense vectors 
@@ -26,7 +26,7 @@ Then run `pip install git+ssh://git@github.com/andrewjong/LMMS-API#egg=lmms_api`
 Note: the fastText dependency can get a little finicky. If installing through `requirements.txt` doesn't work for you, try [installing it separately yourself](https://github.com/facebookresearch/fastText#requirements).
 
 ## Further Options
-The Disambiguator() constructor can take many arguments.
+The `Disambiguator()` constructor can take many arguments.
 
 Change the argument `tokenizer` to change which tokenizer to use. Default is `spacy.load("en_core_web_sm")`.
 
@@ -38,13 +38,20 @@ Available options are "1024", "2048", and "2348" (strings). Default is "1024".
 By default, constructing a Disambiguator object starts a new bert-as-service process in
  the background (`bert-serving-start`). Any existing `bert-serving-start` processes are 
  killed to prevent conflict. When the program ends, the created process is killed.
+ However, this makes start-up pretty slow.
  
-If you'd like to manage your own bert-as-service process and not start one through this
-API, pass `start_bert_server=False` to the constructor.
+If you'd like to manage your own `bert-serving-start` process and not start one through this
+API, pass `start_bert_server=False` to `Disambiguator()`.
+Then, to run bert-as-service yourself, use:
+```bash
+$ bert-serving-start -pooling_strategy NONE -model_dir external/bert/cased_L-24_H-1024_A-16 \
+  -pooling_layer -1 -2 -3 -4 -max_seq_len 512 -max_batch_size 32 -num_worker=1 \
+  -device_map 0 -cased_tokenization
+```
 
-If you prefer not to kill other bert-as-service processes, pass `keep_existing_server=True`.
+If you prefer not to kill other `bert-serving-start` processes, pass `keep_existing_server=True` to `Disambiguator()`.
 
-If you'd like to keep the server alive after the program ends, pass `kill_server_at_end=False`.
+If you'd like to keep the server alive after the program ends, pass `kill_server_at_end=False` to `Disambiguator()`.
 
 Kill all bert-as-service processes with:
 `import lmms_api; lmms_api.kill_all_bert_serving()`
