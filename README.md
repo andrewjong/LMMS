@@ -53,7 +53,7 @@ If you'd like to manage your own `bert-serving-start` process and not start one 
 API, pass `start_bert_server=False` to `Disambiguator()`.
 Then, to run bert-as-service yourself, use:
 ```bash
-$ bert-serving-start -pooling_strategy NONE -model_dir external/bert/cased_L-24_H-1024_A-16 \
+$ bert-serving-start -pooling_strategy NONE -model_dir .lmms/external/bert/cased_L-24_H-1024_A-16 \
   -pooling_layer -1 -2 -3 -4 -max_seq_len 512 -max_batch_size 32 -num_worker=1 \
   -device_map 0 -cased_tokenization
 ```
